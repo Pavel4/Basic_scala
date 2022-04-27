@@ -338,33 +338,44 @@ class Person(val name: String, val age: Int) {
 }
 */
 
- // class Person(val name: String = "", val age: Int = 0)
- // Указываем значения по умолчанию, тогда не нужны доп конструкторы
+// class Person(val name: String = "", val age: Int = 0)
+// Указываем значения по умолчанию, тогда не нужны доп конструкторы
 
 
-  // Объекты
+// Объекты
 
 object Accounts {
   private var lastNumber = 0
-  def newUniqueNumber() = { lastNumber += 1; lastNumber }
+
+  def newUniqueNumber() = {
+    lastNumber += 1;
+    lastNumber
+  }
 }
 
-  // Объект-компаньон
+// Объект-компаньон
 class Account {
   val id = Account.newUniqueNumber()
   private var balance = 0.0
-  def deposit(amount: Double) { balance += amount }
+
+  def deposit(amount: Double) {
+    balance += amount
+  }
 
 }
 
 object Account { // Объект-компаньон
   private var lastNumber = 0
-  private def newUniqueNumber() = { lastNumber += 1; lastNumber }
+
+  private def newUniqueNumber() = {
+    lastNumber += 1;
+    lastNumber
+  }
 }
 
 // Пакеты и импортирование
 
- // import java.awt._    _ - импорт всех членов пакета
+// import java.awt._    _ - импорт всех членов пакета
 
 /* Импортирование возможно в любом месте и
    работает внутри блока
@@ -388,4 +399,123 @@ import Predef._
 
 
 // Наследование
+
+class Employee extends Person {
+  var salary = 0.0
+
+}
+
+/*
+// Переопределение метода
+
+public class Person {
+  ...
+  override def toString = s"${getClass.getName}[name=$name]"
+}
+
+// Обращение к суперклассу через super
+
+public class Employee extends Person {
+  ...
+  override def toString = s"${super.toString}[salary=$salary]"
+}
+
+// Проверка типов
+if (p.isInstanceOf[Employee]) {
+val s = p.asInstanceOf[Employee] // s имеет тип Employee
+...
+}
+
+
+// Переопределение полей
+
+abstract class Person { // Абстрактные классы рассматриваются в разделе 8.8
+def id: Int // Каждый имеет идентификационный номер,
+// который вычисляется некоторым способом
+...
+}
+class Student(override val id: Int) extends Person
+// Идентификационный номер студента просто передается конструктору
+
+// стр. 121 Переопределение объявлений val, def, var
+
+  // Анонимные подклассы
+
+val alien = new Person("Fred") {
+def greeting = "Greetings, Earthling! My name is Fred."
+}
+  // Абстрактные классы
+
+abstract class Person(val name: String) {
+def id: Int // Метод без тела - это абстрактный метод
+}
+ // Абстрактные поля
+
+abstract class Person {
+  val id: Int
+    // Нет начального значения - абстрактное поле с абстрактным методом чтения
+  var name: String
+    // Другое абстрактное поле с абстрактными методами чтения/записи
+}
+
+
+ */
+
+
+// Трейты
+
+trait Logger {
+  def log(msg: String): Unit // Абстрактный метод
+}
+
+class ConsoleLogger extends Logger { // extends, не implements
+  def log(msg: String): Unit = {
+    println(msg)
+  } // override не нужно
+}
+
+//  Наследуем несколько трейтов
+class ConsoleLogger2 extends Logger with Cloneable with Serializable {
+  override def log(msg: String): Unit = ???
+}
+
+/*
+abstract class SavingsAccount extends Account with Logger {
+def withdraw(amount: Double) {
+if (amount > balance) log("Insufficient funds")
+else ...
+}
+...
+}
+
+trait ConsoleLogger extends Logger {
+def log(msg: String) { println(msg) }
+}
+
+val acct = new SavingsAccount with ConsoleLogger
+
+val acct2 = new SavingsAccount with FileLogger
+10.5.
+
+// Опережающее определение
+
+val acct = new { // Блок опережающего определения после new
+val filename = "myapp.log"
+} with SavingsAccount with FileLogger
+
+class SavingsAccount extends { // Опережающее определение после extends
+val filename = "savings.log"
+} with Account with FileLogger {
+... // Реализация SavingsAccount
+}
+
+
+// Сможет подмешиваться только в подклассы указанного типа Type
+
+trait LoggedException extends Logged {
+this: Exception =>
+def log() { log(getMessage()) }
+}
+ */
+
 
